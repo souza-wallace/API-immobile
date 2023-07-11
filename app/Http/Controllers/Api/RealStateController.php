@@ -45,7 +45,23 @@ class RealStateController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data  = $request->all();
+
+        try {
+            $realState = new RealState;
+            $realState->create($data);
+
+            return response()->json([
+                'data' => [
+                    'message' => 'Imóvel cadastrado com sucesso!'
+                ]
+            ], 200);
+
+        } catch (\Throwable $th) {
+            \Log::error('Erro ao criar Imóvel: ' . $th->getMessage());
+            return response()->json(['message' => $th->getMessage()], 500);
+        }
+
     }
 
     /**
@@ -56,7 +72,17 @@ class RealStateController extends Controller
      */
     public function show($id)
     {
-        //
+        try {
+            $realState = RealState::findOrFail($id);
+
+            return response()->json([
+                'data' => $realState
+            ], 200);
+
+        } catch (\Throwable $th) {
+            \Log::error($th->getMessage());
+            return response()->json(['message' => $th->getMessage()], 401);
+        }
     }
 
     /**
@@ -79,7 +105,22 @@ class RealStateController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $data  = $request->all();
+        
+        try {
+            $realState = RealState::findOrFail($id);
+            $realState->update($data);
+
+            return response()->json([
+                'data' => [
+                    'message' => 'Imóvel atualizado com sucesso!'
+                ]
+            ], 200);
+
+        } catch (\Throwable $th) {
+            \Log::error('Erro ao atualizar imóvel: ' . $th->getMessage());
+            return response()->json(['message' => $th->getMessage()], 401);
+        }
     }
 
     /**
@@ -90,6 +131,19 @@ class RealStateController extends Controller
      */
     public function destroy($id)
     {
-        //
+        try {
+            $realState = RealState::findOrFail($id);
+            $realState->delete($data);
+
+            return response()->json([
+                'data' => [
+                    'message' => 'Imóvel deletado com sucesso!'
+                ]
+            ], 200);
+
+        } catch (\Throwable $th) {
+            \Log::error('Erro ao deletar imóvel: ' . $th->getMessage());
+            return response()->json(['message' => $th->getMessage()], 500);
+        }
     }
 }
