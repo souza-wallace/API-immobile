@@ -15,15 +15,15 @@ class CreateTableRealState extends Migration
     {
         Schema::create('real_state', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('user_id');
-            $table->string('title');
-            $table->string('description');
-            $table->text('content');
-            $table->float('price', 10, 2);
-            $table->integer('bathrooms');
-            $table->integer('property_area');
-            $table->integer('total_property_area');
-            $table->string('slug');
+            $table->unsignedBigInteger('user_id')->nullable();
+            $table->string('title')->nullable();
+            $table->string('description')->nullable();
+            $table->text('content')->nullable();
+            $table->float('price', 10, 2)->nullable();
+            $table->integer('bathrooms')->nullable();
+            $table->integer('property_area')->nullable();
+            $table->integer('total_property_area')->nullable();
+            $table->string('slug')->nullable();
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users');

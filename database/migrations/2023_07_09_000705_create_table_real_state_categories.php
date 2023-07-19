@@ -14,11 +14,11 @@ class CreateTableRealStateCategories extends Migration
     public function up()
     {
         Schema::create('real_state_categories', function (Blueprint $table) {
-            $table->unsignedBigInteger('real_state');
+            $table->unsignedBigInteger('real_state_id');
             $table->unsignedBigInteger('category_id');
 
-            $table->foreign('category_id')->references('id')->on('real_state');
-            $table->foreign('real_state')->references('id')->on('categories');
+            $table->foreign('real_state_id')->references('id')->on('real_state');
+            $table->foreign('category_id')->references('id')->on('categories');
 
         });
     }

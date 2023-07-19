@@ -19,8 +19,8 @@ class CreateTableUserProfile extends Migration
 
             $table->text('about')->nullable(true);
             $table->text('social_networks')->nullable(true);
-            $table->string('phone');
-            $table->string('mobile_phone');
+            $table->string('phone')->nullable();
+            $table->string('mobile_phone')->nullable();
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users');
