@@ -15,4 +15,13 @@ class RealState extends Model
     public function user(){
         return $this->belongsTo(User::class);
     }
+
+    /*public function categories(){
+        return $this->belongsToMany(Category::class, 'real_state_categories');
+    }*/
+
+    public function categories()
+    {
+        return $this->belongsToMany(Category::class, 'real_state_categories', 'real_state_id', 'category_id');
+    }
 }

@@ -8,16 +8,6 @@ use App\Models\RealState;
 
 class RealStateController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    
-    /*public function __construct(RealState $realState){
-        $this->realState = $realState;
-    }*/
-
     public function index()
     {
 
@@ -27,29 +17,22 @@ class RealStateController extends Controller
 
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         $data  = $request->all();
 
         try {
             $realState = new RealState;
-            $realState->create($data);
+            $realState = $realState->create($data);
+
+            if(isset($data['categories']) && count($data['categories'])){
+                $realState->categories()->sync($data['categories'], $realState->id);
+            }
 
             return response()->json([
                 'data' => [
@@ -64,12 +47,6 @@ class RealStateController extends Controller
 
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
         try {
@@ -85,31 +62,23 @@ class RealStateController extends Controller
         }
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
         $data  = $request->all();
         
         try {
+            
             $realState = RealState::findOrFail($id);
             $realState->update($data);
+            
+            if(isset($data['categories']) && count($data['categories'])){
+                $realState->categories()->sync($data['categories']);
+            }
 
             return response()->json([
                 'data' => [
@@ -123,12 +92,6 @@ class RealStateController extends Controller
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         try {
