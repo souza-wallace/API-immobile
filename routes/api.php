@@ -20,7 +20,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::prefix('v1')->group(function(){
     Route::resource('realStates', 'App\Http\Controllers\Api\RealStateController');
-
+    Route::resource('users', 'App\Http\Controllers\Api\UserController');
+    Route::resource('categories', 'App\Http\Controllers\Api\CategoryController');
 });
 
 
