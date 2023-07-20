@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\UserProfile;
+use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
@@ -35,11 +37,24 @@ class UserController extends Controller
 
         $data  = $request->all();
 
+        Validator::make($data, [
+            'phone' => 'required',
+            'mobile_phone' => 'required',
+        ])->validate();
+
         try {
             $data['password'] = bcrypt($data['password']);
             
             $user = new User;
-            $user->create($data);
+            $user = $user->create($data);
+           
+
+            $profile = new UserProfile;
+            $profile->user_id = $user->id;
+            $profile->phone = $data['phone'];
+            $profile->mobile_phone = $data['mobile_phone'];
+            $profile->save();
+
 
             return response()->json([
                 'data' => [
@@ -57,7 +72,8 @@ class UserController extends Controller
     public function show($id)
     {
         try {
-            $user = User::findOrFail($id);
+            $user = User::with('profile')->findOrFail($id);
+            $user->profile->social_networks = unserialize($user->profile->social_networks);
 
             return response()->json([
                 'data' => $user
@@ -69,13 +85,7 @@ class UserController extends Controller
         }
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+   
     public function update(Request $request, $id)
     {
         $data  = $request->all();
@@ -86,9 +96,19 @@ class UserController extends Controller
             unset($data['password']);
         }
 
+        Validator::make($data, [
+            'profile.phone' => 'required',
+            'profile.mobile_phone' => 'required',
+        ])->validate();
+
         try {
+            $profile =$data['profile'];
+            $profile['social_networks'] = serialize($profile['social_networks']);
+
             $user = User::findOrFail($id);
             $user->update($data);
+
+            $user->profile()->update($profile);
 
             return response()->json([
                 'data' => [
