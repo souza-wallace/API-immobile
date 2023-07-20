@@ -93,4 +93,18 @@ class CategoryController extends Controller
             return response()->json(['message' => $th->getMessage()], 500);
         }
 	}
+
+	public function realState($id){
+		try{
+            $category = Category::findOrFail($id);
+
+			return response()->json([
+				'data' => $category->realStates
+			], 200);
+
+		} catch (\Throwable $th) {
+            \Log::error('Erro ao mostrar categoria: ' . $th->getMessage());
+            return response()->json(['message' => $th->getMessage()], 500);
+        }
+	}
 }
