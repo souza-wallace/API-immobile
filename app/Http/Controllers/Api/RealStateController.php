@@ -62,7 +62,7 @@ class RealStateController extends Controller
     public function show($id)
     {
         try {
-            $realState = RealState::findOrFail($id);
+            $realState = RealState::with('photos')->findOrFail($id);
 
             return response()->json([
                 'data' => $realState
