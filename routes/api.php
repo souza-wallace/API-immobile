@@ -25,6 +25,7 @@ Route::prefix('v1')->group(function(){
     Route::get('categories/{id}/real-states', 'App\Http\Controllers\Api\CategoryController@realState');
     Route::delete('photos/{id}', 'App\Http\Controllers\Api\RealStatePhotoController@remove');
     Route::put('set-thumb/{photId}/{realStateId}', 'App\Http\Controllers\Api\RealStatePhotoController@setThumb');
+    Route::post('/login', 'App\Http\Controllers\Api\JwtController@login');
 });
 
 

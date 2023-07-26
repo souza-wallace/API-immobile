@@ -40,6 +40,12 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+
+        'api' => [
+            'driver' => 'jwt',
+            'provider' => 'users',
+            'hash' => false,
+        ],
     ],
 
     /*
@@ -65,11 +71,6 @@ return [
             'model' => App\Models\User::class,
         ],
 
-        'api' => [
-            'driver' => 'jwt',
-            'provider' => 'users',
-            'hash' => false,
-        ],
 
         // 'users' => [
         //     'driver' => 'database',
