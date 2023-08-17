@@ -50,7 +50,7 @@ class RealStateController extends Controller
                 'data' => [
                     'message' => 'Imóvel cadastrado com sucesso!'
                 ]
-            ], 200);
+            ], 201);
 
         } catch (\Throwable $th) {
             \Log::error('Erro ao criar Imóvel: ' . $th->getMessage());
